@@ -21,36 +21,36 @@
     <ClInclude Include="__vm\.ASME_robot.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\x\arduino\i2c.h">
+    <ClInclude Include="..\i2c.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\x\arduino\SimpleTimer.h">
+    <ClInclude Include="..\RMCKangaroo2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\x\arduino\SoftwareSerial.h">
+    <ClInclude Include="..\SimpleTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\x\arduino\Timer.h">
+    <ClInclude Include="..\SoftwareSerial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\x\arduino\KangarooSDC.h">
+    <ClInclude Include="..\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\x\arduino\i2c.cpp">
+    <ClCompile Include="..\i2c.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\x\arduino\SimpleTimer.cpp">
+    <ClCompile Include="..\RMCKangaroo2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\x\arduino\SoftwareSerial.cpp">
+    <ClCompile Include="..\SimpleTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\x\arduino\Timer.cpp">
+    <ClCompile Include="..\SoftwareSerial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\x\arduino\KangarooSDC.cpp">
+    <ClCompile Include="..\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
