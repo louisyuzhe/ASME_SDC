@@ -33,6 +33,9 @@
     <ClInclude Include="..\..\..\x\arduino\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\x\arduino\KangarooSDC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\x\arduino\i2c.cpp">
@@ -45,6 +48,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\x\arduino\Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\x\arduino\KangarooSDC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

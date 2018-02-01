@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\x\arduino\i2c.h" />
+    <ClInclude Include="..\..\..\x\arduino\KangarooSDC.h" />
     <ClInclude Include="..\..\..\x\arduino\SimpleTimer.h" />
     <ClInclude Include="..\..\..\x\arduino\SoftwareSerial.h" />
     <ClInclude Include="..\..\..\x\arduino\Timer.h" />
@@ -90,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\x\arduino\i2c.cpp" />
+    <ClCompile Include="..\..\..\x\arduino\KangarooSDC.cpp" />
     <ClCompile Include="..\..\..\x\arduino\SimpleTimer.cpp" />
     <ClCompile Include="..\..\..\x\arduino\SoftwareSerial.cpp" />
     <ClCompile Include="..\..\..\x\arduino\Timer.cpp" />
