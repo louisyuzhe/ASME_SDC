@@ -24,9 +24,6 @@
     <ClInclude Include="..\i2c.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\RMCKangaroo2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\SimpleTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -36,12 +33,12 @@
     <ClInclude Include="..\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\SDCMotorControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\i2c.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\RMCKangaroo2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\SimpleTimer.cpp">
@@ -51,6 +48,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SDCMotorControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

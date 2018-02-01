@@ -1,4 +1,4 @@
-#include "RMCKangaroo2.h"
+#include "SDCMotorControl.h"
 /*!
 Constructor
 */
@@ -10,7 +10,7 @@ Initiates the Kangaroo. Gets min and max positions for Linear Actuator.
 */
 void LinearActuator::begin() {
 	start();
-	getExtremes();
+	getExtremes(); //Getting max and min value for position
 }
 /*!
 Extends Linear Actuator to target position with set speed while in range.
@@ -70,6 +70,7 @@ void LinearActuator::setTargetPos(long pos) {
 		targetVal = map(pos, 0, 100, min, max);
 	}
 }
+
 /*!
 Sets speed for Linear Actuator scaled between 0 and max speed.
 */
@@ -85,116 +86,7 @@ long LinearActuator::getCurrentVal()
 {
 	return status.value();
 }
-/*!
-Constructor
-Instantiates PID control object. Sets default values and range.
-Instaites objects to control Linear Actuators individually.
-*/
-LinearActuatorPair::LinearActuatorPair(KangarooSerial & K, char name)
-{
-	syncPID = new PID(&Input, &Output, &Setpoint, Kp, Ki, Kd, DIRECT);
-	Setpoint = 0;
-	syncPID->SetMode(AUTOMATIC);
-	syncPID->SetOutputLimits(-5, 5);
-	channel[0] = new LinearActuator(K, name);
-	channel[1] = new LinearActuator(K, name+1);
-}
-/*!
-\
-*/
-long * LinearActuatorPair::getCurrentVal()
-{
-	return nullptr;
-}
-long LinearActuatorPair::getPos()
-{
-	return map(channel[0]->status.value(), channel[0]->min, channel[0]->max, 0, 100);
-}
-/*!
-\
-*/
-void LinearActuatorPair::setSpeed(long newSpeed)
-{// set speed in the range if 0 - 100
-	if (newSpeed != lastSpeed && newSpeed >= 0 && newSpeed <= 100)
-	{
-		channel[0]->setSpeed(newSpeed);
-		channel[1]->setSpeed(newSpeed);
-		lastSpeed = newSpeed; //fix this
-		speed = newSpeed;
-	}
-}
-/*!
-Sets target value for position of Linear Actuator.
-*/
-void LinearActuatorPair::setTargetPos(long pos)
-{
-	targetVal = pos;
-}
-/*!
-Computes gap between Linear Actuators and fixes it if greater than tolerance.
-Moves Linear Actuator Pair to target value controlled by PID. 
-Executes loops of all channels.
-*/
-void LinearActuatorPair::loop()
-{
-	long tempTargetVal = targetVal;
-	if (channel[0]->done && channel[1]->done)
-	{
-		channel[0]->setTargetPos(tempTargetVal);
-		channel[1]->setTargetPos(tempTargetVal);
-	}
-	else
-	{
-		long la1 = channel[0]->status.value();
-		long la2 = channel[1]->status.value();
-		Input = la2-la1;
-		long gap = Input;
-		syncPID->Compute();
-		//Serial.println(String(targetVal)+"     "+String(Output));
-		long scaledLa1 = map(la1, channel[0]->min, channel[0]->max, 0, 100);
-		long scaledLa2 = map(la2, channel[0]->min, channel[0]->max, 0, 100);
-		if ((tempTargetVal - scaledLa1) > 1)
-		{
-			channel[1]->setSpeed(speed + Output);
-		}
-		else if ((tempTargetVal - scaledLa1) < -1)
-		{
-			channel[1]->setSpeed(speed - Output);
-		}
 
-		//Serial.println(gap);
-		if (abs(gap) > 25){
-			if (!isSyncing) {
-				isSyncing = true;
-				
-				channel[0]->setTargetPosDirect(la1);
-				channel[1]->setTargetPosDirect(la1);
-			}
-		}
-		else {
-			if (isSyncing && abs(gap) < 15)
-			{
-				isSyncing = false;
-			}
-			channel[0]->setTargetPos(tempTargetVal);
-			channel[1]->setTargetPos(tempTargetVal);
-		}
-	}
-	
-	channel[0]->loop();
-	channel[1]->loop();
-}
-/*!
-Executes begin methods of all channels.
-Sets speed of Linear Actuator.
-*/
-void LinearActuatorPair::begin()
-{
-	
-	channel[0]->begin();
-	channel[1]->begin();
-	setSpeed(94);
-}
 Motor::Motor(KangarooSerial& K, char name) :KangarooChannel(K, name)
 {
 }
@@ -279,8 +171,6 @@ void Motors::loop()
 			}
 			channel[FRONT_LEFT]->setTargetPos(-leftPos);
 			channel[FRONT_RIGHT]->setTargetPos(-rightPos);
-			channel[REAR_LEFT]->setTargetPos(leftPos);
-			channel[REAR_RIGHT]->setTargetPos(rightPos);
 			alreadySetTargetPos = true; //fix this
 		}
 	}
@@ -326,12 +216,12 @@ void Motors::begin()
 }
 long Motors::getLeftMotorS()
 {
-	return map(-channel[REAR_LEFT]->getCurrentSpeed(), -(channel[REAR_LEFT]->speedLimit), channel[REAR_LEFT]->speedLimit, -100, 100);
+	return map(-channel[FRONT_LEFT]->getCurrentSpeed(), -(channel[FRONT_LEFT]->speedLimit), channel[FRONT_LEFT]->speedLimit, -100, 100);
 }
 
 long Motors::getRightMotorS()
 {
-	return map(channel[REAR_RIGHT]->status.value(), -(channel[REAR_RIGHT]->speedLimit), channel[REAR_RIGHT]->speedLimit, -100, 100);
+	return map(channel[FRONT_RIGHT]->status.value(), -(channel[FRONT_RIGHT]->speedLimit), channel[FRONT_RIGHT]->speedLimit, -100, 100);
 }
 
 void Motors::setDrive(long drive)
@@ -369,7 +259,7 @@ void Motors::setAngle(long angle)
 Constructor. Initilizes Arduino pins connected to the Kangaroo.
 \param potPin the Arduino analog pin number. Default is 0.
 */
-RMCKangaroo1::RMCKangaroo1(int rxPin, int txPin)
+KangarooSDC::KangarooSDC(int rxPin, int txPin)
 {
 	SerialPort = new SoftwareSerial(rxPin, txPin);
 	K = new KangarooSerial(*SerialPort);
@@ -379,7 +269,7 @@ RMCKangaroo1::RMCKangaroo1(int rxPin, int txPin)
 /*!
 Executes the loop of the right Linear Actuator
 */
-void RMCKangaroo1::loop()
+void KangarooSDC::loop()
 {
 	motors->loop();
 	//linearActuatorPair->loop();
@@ -388,7 +278,7 @@ void RMCKangaroo1::loop()
 Initiates Serial Communication.
 Executes begin methods of all Linear Actuators and Motors.
 */
-void RMCKangaroo1::begin() {
+void KangarooSDC::begin() {
 	SerialPort->begin(9600);
 	SerialPort->listen();
 	motors->begin();

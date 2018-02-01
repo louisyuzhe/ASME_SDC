@@ -1,36 +1,20 @@
+#include <Kangaroo.h>
+#include <PID_v1.h>
 #include "SimpleTimer.h"
 #include <Wire.h>
-#include "KangarooSDC.h"
+#include "SDCMotorControl.h"
 #define MESSAGE_LENGTH 8
 #define I2CAddress 7
 /*Not all pins on the Mega and Mega 2560 support change interrupts, so only the following can be used for RX: 10, 11, 12, 13, 14, 15, 50, 51, 52, 53, A8 (62), A9 (63), A10 (64), A11 (65), A12 (66), A13 (67), A14 (68), A15 (69).
 */
-
-double uX = 0;
-double vX = 0;
-float v[3];
-int zeros[3];
 long lastTime = 0;
 SimpleTimer timer;
-RMCKangaroo1 motorK(10, 11);
+KangarooSDC motorK(10, 11);
 //At a higher resoultion, speed limit is lower
 
 void setup() {
 	Serial.begin(9600);
-	for (int i = 0; i < 3; i++)
-	{
-		zeros[i] = 0;
-		v[i] = 0.0;
-		for (int j = 0; j < 5; j++)
-		{
-			zeros[i] += analogRead(i);
-			delay(1);
-		}
-		zeros[i] = zeros[i] / 5;
-	}
-
-
-	i2cSetup();
+		i2cSetup();
 	Serial.println("start begin setup");
 	motorK.begin();
 	Serial.println("end setup");

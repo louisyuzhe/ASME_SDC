@@ -5,9 +5,9 @@
 
 #define DEFAULT_NUMBER_OF_CHANNEL 10
 #define FRONT_LEFT 1  //channel 4
-#define REAR_LEFT 2 //channel 5
+//#define REAR_LEFT 2 //channel 5
 #define FRONT_RIGHT 0 //channel 3
-#define REAR_RIGHT 3 //channel 6
+//#define REAR_RIGHT 3 //channel 6
 
 /*!
 \class Actuator
@@ -52,35 +52,6 @@ public:
 	void loop();
 	KangarooStatus status;
 	void begin();
-};
-
-/*!
-\class LinearActuatorPair
-\brief  This class controls two Linear Actuator synchronously.
-*/
-class LinearActuatorPair{
-public:
-	LinearActuatorPair(KangarooSerial& K, char name);
-	LinearActuator* channel[2];
-	long targetVal;
-	long lastVal;
-	long lastSpeed;
-	bool isSyncing;
-	long *getCurrentVal();
-	long getPos();
-	//void setTargetVal(long pos, long newSpeed);
-	void setSpeed(long newSpeed);
-	void setTargetPos(long pos);
-	void loop();
-	void begin();
-	long speed;
-	//Define Variables we'll be connecting to
-	double Setpoint, Input, Output;
-
-	//Specify the links and initial tuning parameters
-	double Kp = 0.4, Ki = 0, Kd = 0;
-	PID* syncPID;
-
 };
 
 class Motor : public KangarooChannel, public Actuator {
@@ -136,7 +107,7 @@ public:
 \class RMCKangaroo1
 \brief  This the main class for Kangaroo X2 Motion Controller
 */
-class RMCKangaroo1
+class KangarooSDC
 {
 protected:
 	int channelIndex[DEFAULT_NUMBER_OF_CHANNEL];
@@ -149,8 +120,7 @@ protected:
 
 public:
 	Motors* motors;
-	LinearActuatorPair* linearActuatorPair;
-	RMCKangaroo1(int rxPin, int txPin);
+	KangarooSDC(int rxPin, int txPin);
 	void loop();
 	void begin();
 	KangarooStatus status[DEFAULT_NUMBER_OF_CHANNEL];
