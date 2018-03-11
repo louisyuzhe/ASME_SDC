@@ -195,8 +195,7 @@ void Motors::loop()
 		}
 		channel[FRONT_LEFT]->setTargetSpeed(-leftSpeed);
 		channel[FRONT_RIGHT]->setTargetSpeed(-rightSpeed);
-		channel[REAR_LEFT]->setTargetSpeed(leftSpeed);
-		channel[REAR_RIGHT]->setTargetSpeed(rightSpeed);
+		
 	}
 	for (int i = 0; i < 4; i++)
 	{

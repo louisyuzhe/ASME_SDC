@@ -89,7 +89,7 @@ void onI2CReceive(int numByte) {
 }
 
 void onI2CRequest() {
-	int linearActPos = motorK.linearActuatorPair->getPos();
+	int linearActPos = motorK.linearActuator->getCurrentVal();
 	int leftMotorSpeed = (motorK.motors->getLeftMotorS());
 	int rightMotorSpeed = (motorK.motors->getRightMotorS());
 

@@ -120,6 +120,7 @@ protected:
 
 public:
 	Motors* motors;
+	LinearActuator* linearActuator;
 	KangarooSDC(int rxPin, int txPin);
 	void loop();
 	void begin();
