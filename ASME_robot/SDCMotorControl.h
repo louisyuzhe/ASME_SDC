@@ -1,12 +1,10 @@
-#pragma once
-#include <SoftwareSerial.h>
 #include <Kangaroo.h>
 #include <PID_v1.h>
 
 #define DEFAULT_NUMBER_OF_CHANNEL 10
-#define FRONT_LEFT 1  //channel 4
-//#define REAR_LEFT 2 //channel 5
 #define FRONT_RIGHT 0 //channel 3
+#define FRONT_LEFT 1  //channel 4
+//#define REAR_LEFT 2 //channel 5	
 //#define REAR_RIGHT 3 //channel 6
 
 /*!
@@ -43,12 +41,12 @@ public:
 	long lastVal;
 	long getCurrentVal();
 	bool done = false;
-//	void setSpeed(long speed);
+	//	void setSpeed(long speed);
 	void getExtremes();
 	void setTargetPosDirect(long pos);
 	void setTargetVal(long pos, long newSpeed);
 	void setSpeed(long newSpeed);
-	void setTargetPos(long pos );
+	void setTargetPos(long pos);
 	void loop();
 	KangarooStatus status;
 	void begin();
@@ -78,16 +76,19 @@ public:
 
 class Motors{
 public:
-	long drive = 101;
-	long turn = 101;
+	//long drive = 101;
+	long leftSpeed = 0;
+	long rightSpeed = 0;
+	//long turn = 101;
 	long angle = 0;
 	long targetPos = 0;
 	bool alreadySetTargetPos = true;
 	int mode = 0;
-	Motor *channel[4];
+	Motor *channel[2];
 	Motors(KangarooSerial & K, char name);
-	void setDrive(long drive);
-	void setTurn(long turn);
+	void drive(long drive, long turn);
+	//void setTurn(long turn);
+	void tankDrive(long leftSpeed, long rightSpeed);
 	void setAngle(long angle);
 	void clearAngle();
 	void loop();
@@ -104,7 +105,7 @@ public:
 };
 
 /*!
-\class RMCKangaroo1
+\class class KangarooSDC
 \brief  This the main class for Kangaroo X2 Motion Controller
 */
 class KangarooSDC
@@ -112,8 +113,8 @@ class KangarooSDC
 protected:
 	int channelIndex[DEFAULT_NUMBER_OF_CHANNEL];
 	Motors* channel[DEFAULT_NUMBER_OF_CHANNEL];
-	
-	SoftwareSerial* SerialPort;
+
+	HardwareSerial* SerialPort;
 	KangarooSerial* K;
 	String channelList;
 	String channelType;
@@ -121,7 +122,7 @@ protected:
 public:
 	Motors* motors;
 	LinearActuator* linearActuator;
-	KangarooSDC(int rxPin, int txPin);
+	KangarooSDC(HardwareSerial &serialPorta);
 	void loop();
 	void begin();
 	KangarooStatus status[DEFAULT_NUMBER_OF_CHANNEL];
