@@ -24,7 +24,6 @@ void serialEvent() {
 			char device = message[1];
 			char value1 = message[2];
 			char value2 = message[3];
-			//Serial.println("Passed checksum: " + String(command) + " " + String(device) + " " + String(value1) + " " + String(value2));
 			switch (command)
 			{
 			case 1:
